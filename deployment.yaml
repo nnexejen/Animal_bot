@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: animal-bot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: animal-bot
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: animal-bot
+    spec:
+      containers:
+      - name: animal-bot
+        image: animal-bot:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+        env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: bot-secrets
+              key: TOKEN
+        - name: CAT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: bot-config
+              key: CAT_URL
+        - name: DOG_URL
+          valueFrom:
+            configMapKeyRef:
+              name: bot-config
+              key: DOG_URL
+       
+
