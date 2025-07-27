@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: bot-config
-data:
-  CAT_URL: "https://api.thecatapi.com/v1/images/search"
-  DOG_URL: "https://api.thedogapi.com/v1/images/search"

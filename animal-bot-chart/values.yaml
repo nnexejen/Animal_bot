@@ -1,0 +1,52 @@
+replicaCount: 1
+
+image:
+  repository: animal-bot
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+resources: 
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+  
+strategy: 
+  type: Recreate
+
+labels:
+  app: animal-bot
+
+container:
+  name: animal-bot
+
+secret:
+  name: bot-secrets
+  token: "123"
+
+configMap:
+  name: bot-config
+  data:
+    CAT_URL: "https://api.thecatapi.com/v1/images/search"
+    DOG_URL: "https://api.thedogapi.com/v1/images/search"    
+
+env:
+  - name: TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: bot-secrets
+        key: TOKEN
+  - name: CAT_URL
+    valueFrom:
+      configMapKeyRef:
+        name: bot-config
+        key: CAT_URL
+  - name: DOG_URL
+    valueFrom:
+      configMapKeyRef:
+        name: bot-config
+        key: DOG_URL    
+
+
